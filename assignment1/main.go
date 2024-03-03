@@ -23,6 +23,7 @@ func main() {
 	input, err := getArgument(os.Args)
 	if err != nil {
 		fmt.Println("Error argument")
+		return
 	}
 
 	student, err := (&entity.Student{}).GetStudent(input)
