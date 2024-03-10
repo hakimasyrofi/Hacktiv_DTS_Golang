@@ -1,11 +1,13 @@
-SQL Query
+### SQL Query Create Table
+```sh
 -- Tabel untuk menyimpan pesanan
 CREATE TABLE orders (
 order_id SERIAL PRIMARY KEY,
 customer_name VARCHAR(255),
 ordered_at TIMESTAMP
 );
-
+```
+```sh
 -- Tabel untuk menyimpan detail item dalam pesanan
 CREATE TABLE items (
 item_id SERIAL PRIMARY KEY,
@@ -15,10 +17,12 @@ quantity INTEGER,
 order_id INTEGER,
 FOREIGN KEY (order_id) REFERENCES orders(order_id)
 );
+```
 
-Request Body Example
+### Request Body Example
 
 CreateOrder
+```sh
 {
 "orderedAt": "2024-03-04T12:30:00Z",
 "customerName": "Hakim",
@@ -35,8 +39,10 @@ CreateOrder
 }
 ]
 }
+```
 
 UpdateOrder
+```sh
 {
 "orderedAt": "2024-03-04T12:30:00Z",
 "customerName": "Hakim",
@@ -55,3 +61,4 @@ UpdateOrder
 }
 ]
 }
+```
