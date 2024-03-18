@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weather Status</title>
+  </head>
+  <body>
+    <h1>Weather Status</h1>
+    <div id="status">
+      Water: <span id="water"></span><br />
+      Wind: <span id="wind"></span><br />
+      Status: <span id="statusText"></span><br />
+    </div>
+
+    <script>
+      // Fungsi untuk memperbarui data status dari server
+      function updateStatus() {
+        fetch("/status.json")
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Failed to fetch data.");
+            }
+            return response.json();
+          })
+          .then((data) => {
+            document.getElementById("water").innerText = data.water;
+            document.getElementById("wind").innerText = data.wind;
+
+            // Menentukan status berdasarkan nilai water dan wind
+            let waterStatus = "";
+            if (data.water < 5) {
+              waterStatus = "Aman";
+            } else if (data.water >= 6 && data.water <= 8) {
+              waterStatus = "Siaga";
+            } else {
+              waterStatus = "Bahaya";
+            }
+
+            let windStatus = "";
+            if (data.wind < 6) {
+              windStatus = "Aman";
+            } else if (data.wind >= 7 && data.wind <= 15) {
+              windStatus = "Siaga";
+            } else {
+              windStatus = "Bahaya";
+            }
+
+            // Menampilkan status
+            document.getElementById(
+              "statusText"
+            ).innerText = `Water: ${waterStatus}, Wind: ${windStatus}`;
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      }
+
+      // Fungsi untuk memperbarui data status secara berkala
+      function startPolling(interval) {
+        updateStatus(); // Memperbarui status secara langsung saat halaman dimuat
+
+        // Memperbarui status secara berkala sesuai dengan interval yang ditentukan
+        setInterval(updateStatus, interval);
+      }
+
+      // Panggil fungsi startPolling saat halaman dimuat
+      startPolling(15000); // Setiap 15 detik
+    </script>
+  </body>
+</html>
